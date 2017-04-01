@@ -22,8 +22,6 @@ using std::vector;
 using std::cout;
 using std::endl;
 
-bool marineAlive(vector<Marine> squad);
-bool zerglingAlive(vector<Zergling> swarm);
 template <typename T>
 bool teamAlive(vector<T> team);
 
@@ -55,19 +53,9 @@ int main()
 	{
 		if (teamAlive(squad)) // if there's at least one marine alive
 		{
-			for (size_t i = 0; i < squad.size(); i++) // go through the squad	TODO make this like zergling iterator
+			for (vector<Marine>::iterator i = squad.begin(); i != squad.end(); ++i) // go through the squad
 			{
-				// TODO extract out as update function
-				// each marine will attack the first zergling in the swarm
-				//cout << "A marine fires for " << squad[i].attack() << " damage. " << endl;
-				//int damage = squad[i].attack();
-				//swarm[0].takeDamage(damage);
-				//if (!swarm[0].isAlive()) // if the zergling dies, it is removed from the swarm
-				//{
-				//	cout << "The zergling target dies" << endl;
-				//	swarm.erase(swarm.begin());
-				//}
-				squad[i].update(swarm);
+				i->update(swarm);
 				if (!teamAlive(swarm))	// if last zergling was killed, stop attacking
 				{	
 					break;
@@ -78,14 +66,6 @@ int main()
 		{
 			for (vector<Zergling>::iterator i = swarm.begin(); i != swarm.end(); ++i) // loop through zerglings
 			{
-				// TODO extract out as update function
-				/*cout << "A zergling attacks for " << i->attack() << " damage." << endl;
-				squad.begin()->takeDamage(i->attack());
-				if (!squad.begin()->isAlive())
-				{
-					squad.erase(squad.begin());
-					cout << "The marine succumbs to his wounds." << endl;
-				}*/
 				i->update(squad);
 				if (!teamAlive(squad))	// if last marine was killed, stop attacking
 				{
@@ -94,6 +74,7 @@ int main()
 					
 			}
 		}
+		system("pause");
 	}
 
 	// Once one team is completely eliminated, the fight ends and one team wins
@@ -101,29 +82,15 @@ int main()
 	if (teamAlive(squad))
 	{
 		cout << "The Marines win." << endl;
-	} else if (teamAlive(swarm))
-	{
-		cout << "The Zerg win." << endl;
 	} else
 	{
-		cout << "It was a draw." << endl;
+		cout << "The Zerg win." << endl;
 	}
+	system("pause");
 }
 
 
-
-// Is there a Marine Alive?
-bool marineAlive(vector<Marine> squad)
-{
-	return squad.size() > 0;
-}
-
-// Is there a zergling Alive
-bool zerglingAlive(vector<Zergling> swarm)
-{
-	return swarm.size()>0;
-}
-
+// Does team have any members Alive
 template <typename T>
 bool teamAlive(vector<T> team)
 {

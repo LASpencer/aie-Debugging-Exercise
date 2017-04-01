@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include <vector>
 
+class Marine;
 
 class Zergling : public Entity
 {
@@ -11,17 +12,8 @@ public:
 	~Zergling();
 
 	int attack();
-	template <typename T>
-	void update(std::vector<T> &targetList) {
-		int damage = attack();
-		cout << ATTACK_MESSAGE << damage << " damage. " << endl;
-		targetList[0].takeDamage(damage);
-		if (!targetList[0].isAlive())
-		{
-			cout << T::DEATH_MESSAGE << endl;
-			targetList.erase(targetList.begin());
-		}
-	}
+	void update(std::vector<Marine> &targetList);
+
 
 	static const int STARTING_HEALTH = 10;
 	static const int DAMAGE = 10;
